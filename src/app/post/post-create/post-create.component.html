@@ -1,8 +1,33 @@
 
-<textarea  rows="20" [(ngModel)]="postData"></textarea>
-<hr>
-<button  (click)="onNewPost()">Add Post</button>
-<hr>
 
-{{postInformation}}
+<mat-card>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<form [formGroup]="frmPost" (submit)="onNewPost()"   *ngIf="!isLoading" >
+<mat-form-field>
+   <input  matInput name="postTitle" 
+     placeholder="Title" 
+     [formControlName]="'Title'"
+     />
+   <mat-error *ngIf="frmPost.get('Title').invalid">Please enter the title</mat-error>
+</mat-form-field>
+<div>
+<button mat-raised-button color="success" type="button" (click)="fileUpload.click()" >Add File</button>
+<input name="fileUpload" type="file"  #fileUpload (change)="addFile($event)" >
+</div>
+<div class="image-preview"  *ngIf="filePreview !== '' && filePreview" >
+    <img [src]="filePreview" [alt]="frmPost.value.Title"/>
+</div>
+<mat-form-field>
+   <textarea matInput rows="2" 
+   [formControlName]="'Content'"
+   placeholder="Description"   ></textarea>
+   <mat-error *ngIf="frmPost.get('Content').invalid">Please enter the description</mat-error>
+</mat-form-field>
+ <button mat-raised-button color="primary" type="submit">Save Post</button>
+</form>
+
+</mat-card>
+
+
+
 
