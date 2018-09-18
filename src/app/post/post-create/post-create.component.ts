@@ -20,7 +20,8 @@ export class PostCreateComponent implements OnInit {
     mode:number=0;
     pID:string;
 
-    pIdentify:string;
+    pIdentifys:string;
+    
 
     postInformation:Post={Id:'',Title:'',Content:'',ImagePath:''};
 
