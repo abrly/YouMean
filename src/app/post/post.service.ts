@@ -138,13 +138,14 @@ export class PostService{
                 'Id':Id,
                 'Title':Title,
                 'Content':Content,
-                'ImagePath':Image
+                'ImagePath':Image,
+                'CreatedBy' : null
                 
 
             };
         }
 
-        var postContent:Post={Id:Id,Title:Title,Content:Content, ImagePath:null};
+        var postContent:Post={Id:Id,Title:Title,Content:Content, ImagePath:null,CreatedBy:null};
 
         console.log('chek');
 

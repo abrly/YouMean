@@ -23,7 +23,7 @@ export class PostCreateComponent implements OnInit {
     pIdentifys:string;
     
 
-    postInformation:Post={Id:'',Title:'',Content:'',ImagePath:''};
+    postInformation:Post={Id:'',Title:'',Content:'',ImagePath:'',CreatedBy:''};
 
     isLoading:boolean=false;
 
@@ -152,7 +152,8 @@ export class PostCreateComponent implements OnInit {
         "Id":null,
         "Title" : this.frmPost.value.Title,
         "Content" : this.frmPost.value.Content,
-        "ImagePath":null
+        "ImagePath":null,
+        "CreatedBy":null
       } 
 
       
@@ -167,7 +168,8 @@ export class PostCreateComponent implements OnInit {
         "Id":this.postInformation.Id,
         "Title" : this.frmPost.value.Title,
         "Content" :this.frmPost.value.Content,
-        "ImagePath":this.frmPost.value.Image
+        "ImagePath":this.frmPost.value.Image,
+        "CreatedBy" : null
       } 
 
       console.log('what here');
