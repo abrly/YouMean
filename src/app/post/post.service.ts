@@ -1,11 +1,11 @@
-import { Injectable } from "../../../node_modules/@angular/core";
+import { Injectable } from "@angular/core";
 
 import { Post } from './post.model';
 
 import {Subject} from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { HttpClient } from "../../../node_modules/@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 
 import { Router} from '@angular/router';
 
@@ -51,7 +51,8 @@ export class PostService{
                           Title:post.Title,
                           Content:post.Content,
                           Id:post._id,
-                          ImagePath:post.ImagePath
+                          ImagePath:post.ImagePath,
+                          CreatedBy:post.CreatedBy
 
                      }
 
@@ -65,6 +66,9 @@ export class PostService{
         }))
        .subscribe(
             (TransformedpostInfo)=>{
+
+                console.log('transformed comes here');
+                console.log(TransformedpostInfo);
                
 
                this.posts=TransformedpostInfo.post;

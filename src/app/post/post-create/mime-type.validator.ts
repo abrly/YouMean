@@ -29,6 +29,7 @@ export const mimeType = (
           case "ffd8ffe2":
           case "ffd8ffe3":
           case "ffd8ffe8":
+          case "47494638":
             isValid = true;
             break;
           default:
@@ -41,6 +42,8 @@ export const mimeType = (
 
           observer.next(null);
         } else {
+          console.log('no valid MIME');
+          console.log(header);
           observer.next({ invalidMimeType: true });
         }
         observer.complete();

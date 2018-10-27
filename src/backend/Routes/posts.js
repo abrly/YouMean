@@ -4,6 +4,8 @@ const multer=require('multer');
 
 const router=express.Router();
 
+const authVerification=require('./../middlewares/auth.verify');
+
 
 const MIME_TYPE_MAP = {
 
@@ -55,7 +57,7 @@ var storeConfig=multer.diskStorage(
 
 const PostModel = require('../models/postdatamodel');
 
-router.post('', multer({storage:storeConfig}).single('Image') ,(req,res,next)=>{
+router.post('',authVerification, multer({storage:storeConfig}).single('Image') ,(req,res,next)=>{
 
       
 
@@ -70,14 +72,14 @@ router.post('', multer({storage:storeConfig}).single('Image') ,(req,res,next)=>{
       {
           Title: req.body.Title, 
           Content:req.body.Content,
-          ImagePath:sImageURL
-          
+          ImagePath:sImageURL,
+          CreatedBy:req.userInfo.userid      
         
         }
 
     );
 
-    
+  
 
     postData.save().then((result)=>{
 
@@ -191,7 +193,7 @@ router.get('',(req,res,next)=>{
 });
 
 
-router.put('/:id', multer({storage:storeConfig}).single('Image'),(req,res,next)=>{
+router.put('/:id',authVerification, multer({storage:storeConfig}).single('Image'),(req,res,next)=>{
 
     let imagePath=req.body.ImagePath;
 
@@ -218,13 +220,28 @@ router.put('/:id', multer({storage:storeConfig}).single('Image'),(req,res,next)=
     
     console.log(postData);
           
-    PostModel.updateOne({_id:req.params.id},postData).then(
+    PostModel.updateOne({_id:req.params.id,CreatedBy:req.userInfo.userid},postData).then(
 
         (oData)=>{
 
-            postData=oData;
+            if (oData.nModified>0){
+
+                postData=oData;
            
-            res.status(200).json({message:'put ok'});
+                res.status(200).json({message:'put ok'});
+
+            }
+            else{
+
+                postData=null;
+           
+                res.status(401).json({message:'Not Authorized'});
+
+            }
+
+          
+
+         
 
 
         }
@@ -237,14 +254,22 @@ router.put('/:id', multer({storage:storeConfig}).single('Image'),(req,res,next)=
 
 });
 
-router.delete('/:id',(req,res,next)=>{
+router.delete('/:id',authVerification,(req,res,next)=>{
 
     
-    PostModel.deleteOne({_id:req.params.id}).then(
+    PostModel.deleteOne({_id:req.params.id,CreatedBy:req.userInfo.userid}).then(
 
         (resp)=>{
 
-            res.status(200).json({message:'deleted one',info:resp});
+            if (resp.n>0){
+                res.status(200).json({message:'deleted one',info:resp});
+            }
+            else{
+
+                res.status(401).json({message:'Not Authorized',info:resp});
+            }
+
+            
              
         }
 

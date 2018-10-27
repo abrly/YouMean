@@ -12,8 +12,8 @@
             {{ p.Content }}
             
       </p>
-      <mat-action-row>
-        <a mat-button [routerLink]="['Edit',p.Id]">EDIT</a>
+      <mat-action-row *ngIf="isAuthDone && UserID===p.CreatedBy">
+        <a  mat-button [routerLink]="['Edit',p.Id]">EDIT</a>
         <button mat-button color="warn" (click)="OnDeletePost(p.Id)" >DELETE</button>
       </mat-action-row>
     

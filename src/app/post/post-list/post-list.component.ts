@@ -1,8 +1,9 @@
 import { Component, OnInit , OnDestroy } from "@angular/core";
-import { PageEvent } from "../../../../node_modules/@angular/Material";
-import { Post } from '.././post.model';
+import { PageEvent } from "@angular/Material";
+import { Post } from '../post.model';
 import { PostService } from "../post.service";
 import { Subscription } from 'rxjs';
+import { AuthService } from "../../auth/auth.service";
 
 
 @Component({
@@ -15,11 +16,15 @@ import { Subscription } from 'rxjs';
 
 export class PostListComponent implements OnInit,OnDestroy {
 
+    isAuthDone:boolean=false;
+
+    UserID:string;
+
     posts:Post[];
 
     isLoading:boolean=false;
 
-    constructor(private postService:PostService){
+    constructor(private postService:PostService,private authService:AuthService){
 
         this.posts=[];
 
@@ -40,6 +45,7 @@ export class PostListComponent implements OnInit,OnDestroy {
 
     ] */
 
+    authSubscription=new Subscription();
     getPostSubscription= new Subscription();
 
     
@@ -49,7 +55,9 @@ export class PostListComponent implements OnInit,OnDestroy {
         this.isLoading=true;
 
         this.postService.GetPosts(this.PageSize,this.currentPage);
-
+        this.UserID=this.authService.getAuthUserID();
+        console.log('who is creator?');
+        console.log(this.UserID);
         this.getPostSubscription = this.postService.GetSubscribedPosts()
                                    .subscribe((p:{posts:Post[],totalCount:number})=>{
 
@@ -61,7 +69,25 @@ export class PostListComponent implements OnInit,OnDestroy {
                                         console.log('pl');
                                         console.log(this.PageLength);
 
+
+                                       
+
                                    });
+
+        this.isAuthDone=this.authService.getAuthStatus();
+        this.authSubscription=this.authService.GetIsUserAuthenticated()
+                                   .subscribe((authStatus)=>{
+     
+                                     console.log('you called me?');
+                                     
+                                     this.isAuthDone=authStatus;
+                                     this.UserID=this.authService.getAuthUserID();
+     
+                                   });
+                                  
+                                   console.log('i get this');
+
+       
 
         
 
@@ -70,6 +96,7 @@ export class PostListComponent implements OnInit,OnDestroy {
     ngOnDestroy(){
 
         this.getPostSubscription.unsubscribe();
+        this.authSubscription.unsubscribe();
 
     }
     

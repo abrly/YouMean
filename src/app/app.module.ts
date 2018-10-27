@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
@@ -22,6 +22,9 @@ import { MatInputModule,
         } from '@angular/Material';
 import { HeaderComponent } from './header/header.component';
 import { PostService } from './post/post.service';
+import { LoginComponent } from './auth/login/login.component';
+import { SignUpComponent } from './auth/signup/signup.component';
+import { AuthIntercepter } from './auth/auth.intercepter';
 
 
 
@@ -30,13 +33,16 @@ import { PostService } from './post/post.service';
     AppComponent,
     PostCreateComponent,
     HeaderComponent,
-    PostListComponent
+    PostListComponent,
+    LoginComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
@@ -47,7 +53,9 @@ import { PostService } from './post/post.service';
     MatProgressSpinnerModule,
     MatPaginatorModule  
   ],
-  providers: [PostService],
+  providers: [PostService,
+    {provide:HTTP_INTERCEPTORS,useClass:AuthIntercepter,multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
