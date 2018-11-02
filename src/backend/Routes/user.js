@@ -24,7 +24,7 @@ router.post('/login',(req,res,next)=>{
 
         if (!user){
 
-            console.log('user not found');
+           
 
             return res.status('401').json({
                 message:"auth failed"
@@ -38,12 +38,12 @@ router.post('/login',(req,res,next)=>{
     })
     .then((result)=>{
 
-        console.log('compare done');
+       
 
         if (!result){
             
             return res.status('401').json({
-                message:"auth failed"
+                message:"Invalid login credentials!"
             });
 
         }
@@ -64,8 +64,6 @@ router.post('/login',(req,res,next)=>{
     })
     .catch((err)=>{
 
-        console.log(err);
-
         return res.status('401').json({
             message:"auth failed"
         });
@@ -76,12 +74,12 @@ router.post('/login',(req,res,next)=>{
 
 router.post('/signup',(req,res,next)=>{
 
-    console.log('i come here');
+
 
     bcrypt.hash(req.body.password,10)
            .then((hasdPwd)=>{
 
-            console.log('i come here 2');
+           
 
                 const userData =new UserModel(
                 {
@@ -91,8 +89,7 @@ router.post('/signup',(req,res,next)=>{
                   });
 
                   userData.save().then((result)=>{
-
-                    console.log('i come here 3');
+                  
 
                     res.status(201).json({
                 
@@ -104,15 +101,27 @@ router.post('/signup',(req,res,next)=>{
             
                          });
                            
+                    },(rjtCase)=>{
+
+                        console.log('i get rje case');
+
+                        return res.status('401').json({
+                            message:'Invalid registration credentials!'
+                        });
+
                     });
 
 
            })
            .catch((err)=>{
 
-            
+            console.log('i get sss');
 
-                Error:err;
+            return res.status('401').json({
+                message:'registration failed!'
+            });
+
+              //  Error:err;
 
            })
 

@@ -25,10 +25,7 @@ export class AppComponent implements OnInit {
 
   storePosts(post:Post){
 
-    console.log('what here');
-    console.log(post);
-
-     console.log(post);
+   
 
       this.postsBucket.push(post);
 

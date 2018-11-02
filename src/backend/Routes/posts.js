@@ -103,6 +103,16 @@ router.post('',authVerification, multer({storage:storeConfig}).single('Image') ,
 
       
 
+    }).catch((err)=>{
+
+        res.status(500).json({
+
+            message:'creating post failed!',
+            createdPost: null
+               
+        });
+
+
     });
 
   
@@ -127,7 +137,7 @@ router.get('/:id',(req,res,next)=>{
 
         res.status(404).json(
 
-            {message:'post not exists',post:null}
+            {message:'post does not exists',post:null}
             
         );
 
@@ -137,6 +147,14 @@ router.get('/:id',(req,res,next)=>{
       
 
 
+
+    }).catch((err)=>{
+
+        res.status(500).json(
+
+            {message:'Error occured during get list!',post:null}
+            
+        );
 
     });
 
@@ -175,13 +193,19 @@ router.get('',(req,res,next)=>{
 
     }).then((cnt)=>{
 
-        console.log('TotalRecs');
-        console.log(cnt);
+       
         res.status(200).json(
 
             
 
             {message:'Posts get success',post:postsInfo,TotalRecords:cnt}
+        );
+
+    }).catch((err)=>{
+
+        res.status(500).json(
+
+            {message:'Unable to get posts!',post:null,TotalRecords:null}
         );
 
     });
@@ -208,8 +232,7 @@ router.put('/:id',authVerification, multer({storage:storeConfig}).single('Image'
 
     }
 
-    console.log('image hre');
-    console.log(imagePath);
+   
 
     var postData =new PostModel(
 
@@ -218,7 +241,7 @@ router.put('/:id',authVerification, multer({storage:storeConfig}).single('Image'
       );
 
     
-    console.log(postData);
+  
           
     PostModel.updateOne({_id:req.params.id,CreatedBy:req.userInfo.userid},postData).then(
 
@@ -235,18 +258,17 @@ router.put('/:id',authVerification, multer({storage:storeConfig}).single('Image'
 
                 postData=null;
            
-                res.status(401).json({message:'Not Authorized'});
+                res.status(401).json({message:'Post updatation failed!'});
 
             }
 
-          
-
-         
-
-
         }
 
-    );
+    ).catch((err)=>{
+
+        res.status(500).json({message:'Error occured during update post!'});
+
+    });
 
     
 
@@ -266,14 +288,15 @@ router.delete('/:id',authVerification,(req,res,next)=>{
             }
             else{
 
-                res.status(401).json({message:'Not Authorized',info:resp});
+                res.status(401).json({message:'Unable to delete',info:resp});
             }
-
-            
              
         }
 
-    );
+    ).catch((err)=>{
+
+        res.status(500).json({message:'Error occured during delete post!',info:null});
+    });
 
    
 

@@ -10,8 +10,7 @@ export class AuthIntercepter implements HttpInterceptor{
     }
 
     intercept(req:HttpRequest<any>,next:HttpHandler){
-
-        console.log(req);
+      
 
       const token= this.authService.getToken();
     
@@ -21,8 +20,7 @@ export class AuthIntercepter implements HttpInterceptor{
 
        });
 
-       console.log(webRequest);
-
+       
        return next.handle(webRequest);
 
     }

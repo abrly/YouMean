@@ -8,7 +8,7 @@ module.exports=((req,res,next)=>{
 
         const decodedToken = jwt.verify(token,"secret_is_here");
 
-        console.log(decodedToken);
+       
 
         const userInfo={email:decodedToken.email,userid:decodedToken.userid}
 
@@ -19,8 +19,8 @@ module.exports=((req,res,next)=>{
     }
     catch(error){
 
-        return res.status('401').json({
-            message:"auth failed"
+        return res.status('500').json({
+            message:"Authentication failed!"
         });
 
     }

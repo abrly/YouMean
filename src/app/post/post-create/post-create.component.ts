@@ -44,7 +44,7 @@ export class PostCreateComponent implements OnInit {
 
      this.actvdRoute.paramMap.subscribe((paramMap)=>{
 
-      console.log(paramMap);
+      
 
         if (paramMap.has('id')){
 
@@ -172,8 +172,7 @@ export class PostCreateComponent implements OnInit {
         "CreatedBy" : null
       } 
 
-      console.log('what here');
-      console.log(updatePost);
+    
 
       this.postService.UpdatePost(updatePost.Id,updatePost.Title,updatePost.Content,updatePost.ImagePath);
 
@@ -186,9 +185,6 @@ export class PostCreateComponent implements OnInit {
 
       this.frmPost.reset()
 
-      console.log('i am added already');
-
-    //  console.log(this.postService.GetPosts());
   }
 
 }

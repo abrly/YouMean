@@ -26,9 +26,7 @@ export class AuthService{
     }
 
     getAuthStatus(){
-        console.log('yoy sh');
-        console.log(this.isAuthenticated);
-        
+       
         return this.isAuthenticated;
     }
 
@@ -36,11 +34,6 @@ export class AuthService{
 
     GetIsUserAuthenticated(){
 
-        console.log('you are here');
-
-        console.log(this.isAuthenticated);
-
-        console.log('you are here?');
 
         return this.IsUserAuthenticated.asObservable();
     }
@@ -50,19 +43,31 @@ export class AuthService{
 
     createUser(email:string,password:string){
 
-        console.log('service hit');
+        
 
        var authData:Auth = {email:email,password:password};
       
-        console.log(authData);
+       
 
         this.httpClient.post('http://localhost:3000/api/user/signup',authData)
             .subscribe(
 
                 (resp)=>{
 
+                    console.log('1');
                     console.log(resp);
+                    
                     this.router.navigate(['/']);
+
+                },
+                (err)=>{
+
+                    console.log('i get err');
+                    console.log(err);
+                    console.log('before me');
+
+                    this.IsUserAuthenticated.next(false);
+
 
                 }
 
@@ -74,11 +79,11 @@ export class AuthService{
 
     login(email:string,password:string){
 
-        console.log('service hit');
+        
 
        var authData:Auth = {email:email,password:password};
       
-        console.log(authData);
+       
 
         this.httpClient.post<{WebToken:string,ExpiresIn:number,UserID:string}>('http://localhost:3000/api/user/login',authData)
             .subscribe(
@@ -88,7 +93,7 @@ export class AuthService{
                     this.token=resp.WebToken;
 
                     const expiresInDuration=resp.ExpiresIn;
-                    console.log(expiresInDuration);
+                    
                     this.tokenTimer = this.setAuthTimer(expiresInDuration);
 
                     if (this.token){
@@ -101,7 +106,7 @@ export class AuthService{
 
                         const expirationDate = new  Date(currentDateTime.getTime() + expiresInDuration * 1000);
 
-                        console.log(expirationDate.toISOString());
+                        
 
                         this.saveAuthData(this.token,expirationDate,resp.UserID);
 
@@ -109,6 +114,12 @@ export class AuthService{
                     }
                     
 
+                },
+                (err)=>{
+
+                    console.log('i get error');
+                    console.log(err);
+                    this.IsUserAuthenticated.next(false);
                 }
 
             ); 

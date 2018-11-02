@@ -33,7 +33,7 @@ export class PostService{
 
    GetPosts(pageSize:number,currentPage:number){
 
-      console.log('how many hits');
+      
 
         var queryParams=`?PageSize=${pageSize}&CurrentPage=${currentPage}`;
 
@@ -67,9 +67,7 @@ export class PostService{
        .subscribe(
             (TransformedpostInfo)=>{
 
-                console.log('transformed comes here');
-                console.log(TransformedpostInfo);
-               
+             
 
                this.posts=TransformedpostInfo.post;
 
@@ -127,9 +125,7 @@ export class PostService{
             PostData.append('Content',Content);
             PostData.append('Image',Image,Title);
 
-            console.log('i am here');
-            console.log(Image);
-            console.log('up');
+          
 
         } else{
 
@@ -147,11 +143,7 @@ export class PostService{
 
         var postContent:Post={Id:Id,Title:Title,Content:Content, ImagePath:null,CreatedBy:null};
 
-        console.log('chek');
-
-        console.log(Id);
-        
-        console.log(PostData);
+       
         
         this.httpClient.put('http://localhost:3000/api/posts/'+ Id,PostData).subscribe((res)=>{
 

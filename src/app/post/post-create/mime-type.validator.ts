@@ -38,12 +38,11 @@ export const mimeType = (
         }
         if (isValid) {
 
-          console.log('checking now');
+          
 
           observer.next(null);
         } else {
-          console.log('no valid MIME');
-          console.log(header);
+         
           observer.next({ invalidMimeType: true });
         }
         observer.complete();

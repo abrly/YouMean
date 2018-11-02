@@ -56,8 +56,7 @@ export class PostListComponent implements OnInit,OnDestroy {
 
         this.postService.GetPosts(this.PageSize,this.currentPage);
         this.UserID=this.authService.getAuthUserID();
-        console.log('who is creator?');
-        console.log(this.UserID);
+       
         this.getPostSubscription = this.postService.GetSubscribedPosts()
                                    .subscribe((p:{posts:Post[],totalCount:number})=>{
 
@@ -66,9 +65,7 @@ export class PostListComponent implements OnInit,OnDestroy {
                                         this.posts=p.posts;
                                         this.PageLength=p.totalCount;
 
-                                        console.log('pl');
-                                        console.log(this.PageLength);
-
+                                      
 
                                        
 
@@ -78,14 +75,14 @@ export class PostListComponent implements OnInit,OnDestroy {
         this.authSubscription=this.authService.GetIsUserAuthenticated()
                                    .subscribe((authStatus)=>{
      
-                                     console.log('you called me?');
+                                     
                                      
                                      this.isAuthDone=authStatus;
                                      this.UserID=this.authService.getAuthUserID();
      
                                    });
                                   
-                                   console.log('i get this');
+                                  
 
        
 
@@ -108,7 +105,9 @@ export class PostListComponent implements OnInit,OnDestroy {
 
             this.postService.GetPosts(this.PageSize,this.currentPage);
 
+        },(err)=>{
 
+            this.isLoading=false;
         });
         
     }
@@ -121,7 +120,7 @@ export class PostListComponent implements OnInit,OnDestroy {
         this.currentPage=evnt.pageIndex+1;
         this.PageSize=evnt.pageSize;
         this.postService.GetPosts(this.PageSize,this.currentPage);
-        console.log(evnt)
+        
     }
    
 

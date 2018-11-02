@@ -1,17 +1,32 @@
-import { Component } from "@angular/core";
+import { Component, OnInit,OnDestroy } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
     templateUrl:'./login.component.html',
     styleUrls:['./login.component.css']
 
 })
-export class LoginComponent{
+export class LoginComponent implements OnInit,OnDestroy{
     isLoading=false;
+
+    private IsAuthenticated = new Subscription();
 
     constructor(private authService:AuthService){
 
+    }
+
+    ngOnInit(){
+        this.IsAuthenticated=this.authService.GetIsUserAuthenticated().subscribe(
+
+            (res)=>{
+                if (res==false){
+                    this.isLoading=false;
+                }
+            }
+
+        );
     }
 
     onLogin(frmLogin:NgForm){
@@ -26,6 +41,10 @@ export class LoginComponent{
 
        
 
+    }
+
+    ngOnDestroy(){
+        this.IsAuthenticated.unsubscribe();
     }
 
 }

@@ -19,8 +19,7 @@ export class AuthGuard implements CanActivate{
 
          const isAuthDone=this.authService.getAuthStatus();
 
-        console.log('Auth Guard here');
-        console.log(isAuthDone);
+       
 
         if (!isAuthDone){
            this.router.navigate(['/Login']);
