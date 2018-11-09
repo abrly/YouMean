@@ -11,7 +11,7 @@ const userRouter=require('./Routes/user');
 const path = require('path');
 
 
-mongoose.connect('mongodb+srv://abrly:vTqtCWJgSuV9Utfv@mongocluster-qntx9.mongodb.net/postDB?retryWrites=true')
+mongoose.connect('mongodb+srv://abrly:' + process.env.MONGO_ATLAS_PWD + '@mongocluster-qntx9.mongodb.net/postDB?retryWrites=true')
 .then((res)=>{
     console.log('db connection succeeded!')
 })

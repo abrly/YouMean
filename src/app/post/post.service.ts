@@ -9,6 +9,10 @@ import { HttpClient } from "@angular/common/http";
 
 import { Router} from '@angular/router';
 
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL=environment.apiURL + 'posts';
+
 
 @Injectable()
 export class PostService{
@@ -25,7 +29,7 @@ export class PostService{
     GetPost(postId:string){
       
          return this.httpClient.get<{message:string,post:{_id:string,Title:string,Content:string,ImagePath:string}}>
-            ('http://localhost:3000/api/posts/'+ postId);
+            (BACKEND_URL+ postId);
        
     }
 
@@ -37,7 +41,7 @@ export class PostService{
 
         var queryParams=`?PageSize=${pageSize}&CurrentPage=${currentPage}`;
 
-        this.httpClient.get<{message:string,post:any,TotalRecords:number}>('http://localhost:3000/api/posts'+ queryParams)
+        this.httpClient.get<{message:string,post:any,TotalRecords:number}>(BACKEND_URL+ queryParams)
         .pipe(map((postInfo)=>{
 
            
@@ -107,7 +111,7 @@ export class PostService{
         }); */
 
 
-       return this.httpClient.delete<{message:string}>('http://localhost:3000/api/posts/'+ id);
+       return this.httpClient.delete<{message:string}>(BACKEND_URL+ id);
     
 
     }
@@ -145,7 +149,7 @@ export class PostService{
 
        
         
-        this.httpClient.put('http://localhost:3000/api/posts/'+ Id,PostData).subscribe((res)=>{
+        this.httpClient.put(BACKEND_URL+ Id,PostData).subscribe((res)=>{
 
             
             this.router.navigate(['/']);
@@ -165,7 +169,7 @@ export class PostService{
     
       // var postContent:Post={Id:null,Title:sTitle,Content:sContent};
 
-       this.httpClient.post<{message:string,createdPost:{'Id':string,'Title':string,'Content':string,'ImagePath':string}}>('http://localhost:3000/api/posts',frmPostFormData).subscribe(
+       this.httpClient.post<{message:string,createdPost:{'Id':string,'Title':string,'Content':string,'ImagePath':string}}>(BACKEND_URL,frmPostFormData).subscribe(
 
             (res)=>{
 

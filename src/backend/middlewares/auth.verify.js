@@ -6,9 +6,11 @@ module.exports=((req,res,next)=>{
 
         var token=req.headers.authorization.split(' ')[1];
 
-        const decodedToken = jwt.verify(token,"secret_is_here");
+        console.log('bel');
 
-       
+        const decodedToken = jwt.verify(token,process.env.JWT_KEY);
+
+        console.log('bel1');
 
         const userInfo={email:decodedToken.email,userid:decodedToken.userid}
 
